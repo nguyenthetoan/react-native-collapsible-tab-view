@@ -149,18 +149,20 @@ export function useCollapsibleStyle(): CollapsibleStyle {
     (containerHeightVal ?? 0) - minHeaderHeight
   )
 
-  return useMemo(
-    () => ({
+  return useMemo(() => {
+    const paddingTop =
+      IS_IOS && !allowHeaderOverscroll
+        ? 0
+        : (headerHeightVal || 0) + (tabBarHeightVal || 0)
+    const minHeight =
+      IS_IOS && !allowHeaderOverscroll
+        ? containerHeightWithMinHeader - (tabBarHeightVal || 0)
+        : containerHeightWithMinHeader + (headerHeightVal || 0)
+    return {
       style: { width },
       contentContainerStyle: {
-        minHeight:
-          IS_IOS && !allowHeaderOverscroll
-            ? containerHeightWithMinHeader - (tabBarHeightVal || 0)
-            : containerHeightWithMinHeader + (headerHeightVal || 0),
-        paddingTop:
-          IS_IOS && !allowHeaderOverscroll
-            ? 0
-            : (headerHeightVal || 0) + (tabBarHeightVal || 0),
+        minHeight,
+        paddingTop,
       },
       progressViewOffset:
         // on iOS we need the refresh control to be at the top if overscrolling
@@ -168,15 +170,14 @@ export function useCollapsibleStyle(): CollapsibleStyle {
           ? 0
           : // on android we need it below the header or it doesn't show because of z-index
             (headerHeightVal || 0) + (tabBarHeightVal || 0),
-    }),
-    [
-      allowHeaderOverscroll,
-      headerHeightVal,
-      tabBarHeightVal,
-      width,
-      containerHeightWithMinHeader,
-    ]
-  )
+    }
+  }, [
+    allowHeaderOverscroll,
+    headerHeightVal,
+    tabBarHeightVal,
+    width,
+    containerHeightWithMinHeader,
+  ])
 }
 
 export function useUpdateScrollViewContentSize({ name }: { name: TabName }) {
@@ -346,13 +347,13 @@ export const useScrollHandlerY = (name: TabName) => {
           snappingTo.value = 0
           scrollAnimation.value = scrollYCurrent.value
           scrollAnimation.value = withTiming(0)
-          //console.log('[${name}] snap down')
+          // console.log('[${name}] snap down')
         } else if (scrollYCurrent.value <= headerScrollDistance.value) {
           // snap up
           snappingTo.value = headerScrollDistance.value
           scrollAnimation.value = scrollYCurrent.value
           scrollAnimation.value = withTiming(headerScrollDistance.value)
-          //console.log('[${name}] snap up')
+          // console.log('[${name}] snap up')
         }
       }
     }
@@ -475,6 +476,8 @@ export const useScrollHandlerY = (name: TabName) => {
         const focusedScrollY = scrollY.value[Math.round(indexDecimal.value)]
         const tabScrollY = scrollY.value[tabIndex]
         const areEqual = focusedScrollY === tabScrollY
+        console.log('focusedScrollY ', focusedScrollY)
+        console.log('tabScrollY', tabScrollY)
 
         if (!areEqual) {
           const currIsOnTop =
@@ -500,7 +503,7 @@ export const useScrollHandlerY = (name: TabName) => {
         }
 
         if (nextPosition !== null) {
-          // console.log(`sync ${name} ${nextPosition}`)
+          console.log(`sync ${name} ${nextPosition}`)
           scrollY.value[tabIndex] = nextPosition
           scrollTo(refMap[name], 0, nextPosition, false, `[${name}] sync pane`)
         }

@@ -31,13 +31,27 @@ const Example = React.forwardRef<CollapsibleRef, Props>(
         </Tabs.Tab>
         <Tabs.Tab name="contacts" label="FlashList">
           {/* 
-            // see: https://github.com/PedroBern/react-native-collapsible-tab-view/issues/335
-            <ContactsFlashList emptyContacts={emptyContacts} limit={5} /> 
-          */}
-          <ContactsFlashList emptyContacts={emptyContacts} />
+              // see: https://github.com/PedroBern/react-native-collapsible-tab-view/issues/335
+              <ContactsFlashList emptyContacts={emptyContacts} limit={5} /> 
+            */}
+          <Tabs.ScrollView
+            nestedScrollEnabled
+            style={{ flex: 1, minHeight: 100 }}
+          >
+            <ContactsFlashList
+              nestedScrollEnabled
+              emptyContacts={emptyContacts}
+              limit={5}
+            />
+          </Tabs.ScrollView>
         </Tabs.Tab>
         <Tabs.Tab name="masonry" label="Masonry Layout">
-          <Masonry />
+          <Tabs.ScrollView
+            nestedScrollEnabled
+            style={{ flex: 1, minHeight: 100 }}
+          >
+            <Masonry />
+          </Tabs.ScrollView>
         </Tabs.Tab>
         <Tabs.Tab name="ordered" label="FlatList">
           <ContactsFlatList emptyContacts={emptyContacts} limit={5} />

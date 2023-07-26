@@ -17,7 +17,7 @@ const Masonry: React.FC<object> = () => {
   return (
     <Tabs.MasonryFlashList
       testID="MasonryList"
-      data={data}
+      data={data.slice(0, 5)}
       optimizeItemArrangement
       overrideItemLayout={(layout, item) => {
         layout.size = item.height

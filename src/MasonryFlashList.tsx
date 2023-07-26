@@ -95,7 +95,7 @@ function MasonryFlashListImpl<R>(
     enable(true)
   })
 
-  const { progressViewOffset, contentContainerStyle } = useCollapsibleStyle()
+  const { progressViewOffset } = useCollapsibleStyle()
 
   React.useEffect(() => {
     setRef(name, recyclerRef)
@@ -136,10 +136,10 @@ function MasonryFlashListImpl<R>(
 
   const memoContentContainerStyle = React.useMemo(
     () => ({
-      paddingTop: contentContainerStyle.paddingTop,
+      // paddingTop: contentContainerStyle.paddingTop,
       ..._contentContainerStyle,
     }),
-    [_contentContainerStyle, contentContainerStyle.paddingTop]
+    [_contentContainerStyle]
   )
 
   const refWorkaround = useCallback(

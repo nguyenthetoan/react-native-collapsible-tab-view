@@ -79,7 +79,7 @@ function FlashListImpl<R>(
     enable(true)
   })
 
-  const { progressViewOffset, contentContainerStyle } = useCollapsibleStyle()
+  const { progressViewOffset } = useCollapsibleStyle()
 
   React.useEffect(() => {
     setRef(name, recyclerRef)
@@ -120,10 +120,10 @@ function FlashListImpl<R>(
 
   const memoContentContainerStyle = React.useMemo(
     () => ({
-      paddingTop: contentContainerStyle.paddingTop,
+      // paddingTop: _hookedContentContainerStyle.paddingTop,
       ..._contentContainerStyle,
     }),
-    [_contentContainerStyle, contentContainerStyle.paddingTop]
+    [_contentContainerStyle]
   )
 
   const refWorkaround = useCallback(
